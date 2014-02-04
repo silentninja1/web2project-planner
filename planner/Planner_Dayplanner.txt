@@ -1,0 +1,83 @@
+Planner/Dayplanner
+
+This module is intended to give support for planning purposes.
+It includes drag and drop support, so some jobs can be done faster than calling webpages and waiting for webpages.
+Currently tested on Firefox and Google Chrome, does not work (yet?) on IE.
+
+At the moment, there is are submodules: dayplanner, weekplanner, monthplanner, task planning (interactive gantt).
+It intends to help to distribute my current tasks into small workloads that I will tackle in my working day.
+
+Middle display: interactive calendar showing the day's events. Events can be dragged to other time slots, 
+or they can be resized. Doubleclick into a time slot creates a new event and stores it to the database (as private event).
+Doubleclick on an event changes the color to green. I use this to indicate that I have actually worked on this issue.
+So at the end of the day, I can easily see what was not done or at least not started, due to other things coming up.
+A tooltip shows info and description for the event.
+
+Company MUST be set to all to display the events, they are not yet attached to a company.
+
+A popup gives links to view/edit the event. Using ctrl or shift/click, this can open in a new window or tab.
+Known 'bug': dragging into monthplanner creates the event at midnight, so it will not be shown in day/wekkview.
+
+
+Left display:
+This shows a list of my currently active tasks - colored by overdue, in time, not started yet, 
+just as the tasks in the tasks tab are colored.
+The tasks can be dragged to a timeslot on the calendar and will be converted into private events and 
+stored to the database.
+I usually have more tasks than I can finish in a working day - I use this to decide
+which tasks I want to work on today at supposedly which time.
+After storing (again as private event), they can be resized or dragged to different times.
+
+Tooltips: they allow to view, edit, create task logs, view the parent project, all usng html links.
+Holding shift/ckick will open a new browser window for this. Changed info is not yet propagated back to the task display, 
+that needs a reload of the page.
+
+Doubleclick on a task will open a dialog for the % progress. 100% is preset, so to finish a task, 
+doubleclick enter is sufficient.
+
+
+In addition to the official company projects in w2p, I created a project for private tasks, another for the small
+company tasks that need not be expanded to full fledged projects.
+
+Adding new tasks: typically, I use project designer to add a bunch of these. Usually, I have two or three projectdesigner
+windows (for different projects) open to quickly add new tasks when they come up into the appropriate projects, and then pull
+them into the day_planner window by a refresh F5.
+
+More to come:
+
+Convert (Thunderbird) emails into w2p tasks.
+Interactive change of task start and end date. Like: dragging the events seems to be much faster than using the addedit webpages.
+A preview of that is shown in task planner.
+
+etc.
+
+
+Some bugs, clipped tooltips, etc., but it is usable and helps me to plan since a few weeks, and didn't destroy
+anything inside my database (yet?).  No warranty given  in any case.
+Don't look at the code, it is a mess.
+
+
+I tested this on my notebook with a local wampserver. Response times are fine, for display and also for posting to the database.
+
+Beware: creating new events, the title is stored as is - I didn't check yet whether w2p checks elsewhere for bad html, sql
+injection etc. I don't do that on my server, but this potential safety flaw makes the module still beta.
+
+Nevertheless, for me, it is usable. Enjoy.
+
+Klaus
+
+
+Dayplanner v1.0.0
+Klaus Buecher
+   
+
+LICENSE
+
+=====================================
+
+The Dayplanner module was built by Klaus Buecher and is released here
+under modified BSD license (see GNU.org).
+
+Uses jquery, jqueryui and fullcalendar. Please see their separate licences.
+ * 
+Copyright (c) 2013 Klaus Buecher (Opto)

@@ -1,0 +1,84 @@
+<?php
+
+if (!defined('W2P_BASE_DIR'))
+{
+  die('You should not access this file directly.');
+}
+
+class CTask_ex extends CTask
+{
+    public function getAllTasksForPeriod($start_date, $end_date, $company_id = 0, $user_id = null)
+    {
+        global $AppUI;
+        $q = new w2p_Database_Query();
+
+        // convert to default db time stamp
+        $db_start = $start_date->format(FMT_DATETIME_MYSQL);
+        $db_end = $end_date->format(FMT_DATETIME_MYSQL);
+
+        // Allow for possible passing of user_id 0 to stop user filtering
+        if (!isset($user_id)) {
+            $user_id = $AppUI->user_id;
+        }
+
+        // check permissions on projects
+        $proj = new CProject();
+        $task_filter_where = $proj->getAllowedSQL($AppUI->user_id, 't.task_project');
+        // exclude read denied projects
+        $deny = $proj->getDeniedRecords($AppUI->user_id);
+        // check permissions on tasks
+        $obj = new CTask();
+        $allow = $obj->getAllowedSQL($AppUI->user_id, 't.task_id');
+
+        $q->addTable('tasks', 't');
+        if ($user_id) {
+            $q->innerJoin('user_tasks', 'ut', 't.task_id=ut.task_id');
+        }
+        $q->innerJoin('projects', 'projects', 't.task_project = projects.project_id');
+        $q->innerJoin('companies', 'companies', 'projects.project_company = companies.company_id');
+        $q->leftJoin('project_departments', '', 'projects.project_id = project_departments.project_id');
+        $q->leftJoin('departments', '', 'departments.dept_id = project_departments.department_id');
+
+        $q->addQuery('DISTINCT t.task_id, t.task_name, t.task_start_date, t.task_end_date, t.task_percent_complete, t.task_duration' . ', t.task_duration_type, projects.project_color_identifier AS color, projects.project_name, t.task_milestone, task_description, task_type, company_name, task_access, task_owner');
+        $q->addWhere('task_status > -1' . ' AND (task_start_date <= \'' . $db_end . '\'  AND t.task_percent_complete<100  OR task_end_date = \'0000-00-00 00:00:00\' OR task_end_date = NULL )');
+        $q->addWhere('project_active = 1');
+        if (($template_status = w2PgetConfig('template_projects_status_id')) != '') {
+            $q->addWhere('project_status <> ' . $template_status);
+        }
+        if ($user_id) {
+            $q->addWhere('ut.user_id = ' . (int) $user_id);
+        }
+
+        if ($company_id) {
+            $q->addWhere('projects.project_company = ' . (int) $company_id);
+        }
+        if (count($task_filter_where) > 0) {
+            $q->addWhere('(' . implode(' AND ', $task_filter_where) . ')');
+        }
+        if (count($deny) > 0) {
+            $q->addWhere('(t.task_project NOT IN (' . implode(', ', $deny) . '))');
+        }
+        if (count($allow) > 0) {
+            $q->addWhere('(' . implode(' AND ', $allow) . ')');
+        }
+        $q->addOrder('t.task_start_date');
+
+        // assemble query
+        $tasks = $q->loadList(-1, 'task_id');
+
+        // check tasks access
+        $result = array();
+        foreach ($tasks as $key => $row) {
+            $obj->load($row['task_id']);
+            $canAccess = $obj->canAccess();
+            if (!$canAccess) {
+                continue;
+            }
+            $result[$key] = $row;
+        }
+        // execute and return
+        return $result;
+    }
+
+}
+?>
