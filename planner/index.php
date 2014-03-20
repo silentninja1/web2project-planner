@@ -226,6 +226,7 @@ function clickDay( idate, fdate ) {
                 $tabBox->add('vw_day_events', 'Day-Events');
                 $tabBox->add('vw_day_tasks', 'Day-Tasks');
                 $tabBox->add('vw_task_planner', 'Task Date Planning');
+                $tabBox->add('vw_project_tools', 'Project Planning Tools');
                 $tabBox->show('',false, 'left',false);
             ?>
         </td>
