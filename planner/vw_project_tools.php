@@ -44,21 +44,35 @@ function showtask_pd_ed1(&$arr, $level = 0, $today_view = false) {
 	global $AppUI, $w2Pconfig, $done, $userAlloc, $showEditCheckbox;
 	global $task_access, $PROJDESIGN_CONFIG, $m, $expanded;
   $class = 'late';//w2pFindTaskComplete($arr['task_start_date'], $arr['task_end_date'], $arr['task_percent_complete']);
+/*
+               $myDate = intval($value) ? new w2p_Utilities_Date($value) : null;
+                $cell = $myDate ? $myDate->format($this->df) : '-';
+ 
+*/
+$userTZ = $AppUI->getPref('TIMEZONE');
 
   $tid=(string)$arr['task_id'];
-
+$df=  ' ' . $AppUI->getPref('SHDATEFORMAT');
 $tp=(string)$arr['task_percent_complete'];
 $tn=(string)$arr['task_name'];
-$te=(string)$arr['task_end_date'];
-$ts=(string)$arr['task_start_date'];
-$padl=$level*17;
+$te=(string)$AppUI->formatTZAwareTime($arr['task_end_date'], '%Y-%m-%d %T');;
+ $ts=(string)$arr['task_start_date'];
+//	$start_date_userTZ = $start_date = new w2p_Utilities_Date($ts,$userTZ);
+// 	$ts = $start_date->format(FMT_DATETIME_MYSQL);
+	$tsTZ=$AppUI->formatTZAwareTime($ts, '%Y-%m-%d %T');
+ /*
+              $myDate = new w2p_Utilities_Date($ts);
+                $cell = $myDate ? $myDate->format($df) : '-';
+				$ts=$cell;
+*/
+ $padl=$level*17;
 $pad="$padlpx";//$level*50;
     $htmlHelper = new w2p_Output_HTMLHelper($AppUI);
     $htmlHelper->df .= ' ' . $AppUI->getPref('TIMEFORMAT');
     $htmlHelper->stageRowData($arr);
 
 //$tsd=$htmlHelper->createCell('task_start_datetime', $arr['task_start_date'])
-echo "    <tr id='$tid'   class=".'"'.$class.'"'."><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td >$ts</td><td   >$te</td></tr> ";
+echo "    <tr id='$tid'   class=".'"'.$class.'"'."><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td >$tsTZ</td><td   >$te</td></tr> ";
 
 //echo "    <tr style='text-align:left'><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td>".$tsd."</td><td   >$te</td></tr> ";
 }
@@ -225,7 +239,7 @@ function findchild_pd_ed(&$tarr, $parent, $level = 0) {
 	for ($x = 0; $x < $n; $x++) {
 		if ($tarr[$x]['task_parent'] == $parent && $tarr[$x]['task_parent'] != $tarr[$x]['task_id']) {
 			echo showtask_pd_ed1($tarr[$x], $level);
-			findchild_pd($tarr, $tarr[$x]['task_id'], $level);
+			findchild_pd_ed($tarr, $tarr[$x]['task_id'], $level);
 		}
 	}
 }
@@ -664,7 +678,9 @@ require("http://localhost/w2pm/modules/planner/js2/jquery-ui.js");
 $(document).ready(function(){
     $('#tblTask').dataTable(
   {
+"bStateSave":true,
 "sDom": '<top1 f><top2 l>rt<"bottom"ip><"clear">'   ,
+"aLengthMenu": [[25, 50, 100,-1], [25, 50,100, "All"]],
 "aoColumns":  [
     { sName:"task_percent_complete"} ,
     { sName:"task_name"} ,
@@ -693,7 +709,11 @@ bSort:false,
 
     <thead>    
 <?php
-echo "    <th nowrap='nowrap'>$AppUI->_('Work') </th><th>$AppUI->_('Task  Name')</th><th>$AppUI->_('Start')</th><th>$AppUI->_('Finish')</th> ";
+$WorkTitle=$AppUI->_('Work');
+$NameTitle=$AppUI->_('Task  Name');
+$StartTitle=$AppUI->_('Start');
+$EndTitle=$AppUI->_('Finish');
+echo "    <th nowrap='nowrap'>$WorkTitle </th><th>$NameTitle</th><th>$StartTitle</th><th>$EndTitle</th> ";
             ?>
   
 <?php

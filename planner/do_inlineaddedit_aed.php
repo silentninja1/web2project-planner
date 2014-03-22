@@ -25,6 +25,28 @@ if (!canEdit('tasks')) {
   if ($column=="task_name") $task_obj->task_name=$value;
   
   if ($column=="task_percent_complete") $task_obj->task_percent_complete=(int)$value;
+  if ($column=="task_start_date") {
+  	$userTZ = $AppUI->getPref('TIMEZONE');
+	$start_date_userTZ = $start_date = new w2p_Utilities_Date($value,$userTZ);
+         $start_date->convertTZ('UTC');
+	$ts = $start_date->format(FMT_DATETIME_MYSQL);
+
+
+  	$task_obj->task_start_date=$ts;
+	}
+
+  if ($column=="task_end_date") {
+  	$userTZ = $AppUI->getPref('TIMEZONE');
+	$start_date_userTZ = $start_date = new w2p_Utilities_Date($value,$userTZ);
+         $start_date->convertTZ('UTC');
+	$ts = $start_date->format(FMT_DATETIME_MYSQL);
+
+
+  	$task_obj->task_end_date=$ts;
+	}
+
+
+  
 //  if (column=="task_start_date") $task_obj->task_name=$value;
  // if (column=="task_end_date") $task_obj->task_name=$value;
 
