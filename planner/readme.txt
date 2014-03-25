@@ -1,7 +1,7 @@
 Planner/Dayplanner
 
 
-Planner v1.0.3
+Planner v1.0.6
 Klaus Buecher
    
 
@@ -14,7 +14,7 @@ under modified BSD license (see GNU.org).
 
 Uses jquery, jqueryui, jsgantt and fullcalendar. Please see their separate licences.
  * 
-Copyright (c) 2013 Klaus Buecher (Opto)
+Copyright (c) 2013/2014 Klaus Buecher (Opto)
 
 
 
@@ -22,6 +22,9 @@ Copyright (c) 2013 Klaus Buecher (Opto)
 
 
 This module is intended to give support for planning purposes.
+
+Project tools:
+show table of tasks. They can directly be edited inside table. Aloo displays search fields.
 
 
 Task date planning (IE, FF etc.)

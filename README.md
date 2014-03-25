@@ -1,7 +1,11 @@
 web2project-planner
 ===================
 
-drag/drop/resize for events, tasks and day planning
+drag/drop/resize for events, tasks and day/week/month planning
+
+intable editing without opening the addedit webpage
+filter/search on whole table, or on individual columns, 
+    including AND search over several columns
 
 
 I have updated the planner module for w2p 3.1.
@@ -20,6 +24,9 @@ Dayplanner/Weekplanner/Monthplanner/Calendar:
 
 Task date Planning: experimental implementation of interactive gannt for MYTasks.
 •allows reschedule task by drag or resize.
+
+Project tools:
+show table of tasks. They can directly be edited inside table. Aloo displays search fields.
 
 More info: see below.
 
