@@ -55,6 +55,8 @@ $userTZ = $AppUI->getPref('TIMEZONE');
 $df=  ' ' . $AppUI->getPref('SHDATEFORMAT');
 $tp=(string)$arr['task_percent_complete'];
 $tn=(string)$arr['task_name'];
+$td=(string)  ($arr['task_description']);
+
 $te=(string)$AppUI->formatTZAwareTime($arr['task_end_date'], '%Y-%m-%d %T');;
  $ts=(string)$arr['task_start_date'];
 //	$start_date_userTZ = $start_date = new w2p_Utilities_Date($ts,$userTZ);
@@ -72,7 +74,7 @@ $pad="$padlpx";//$level*50;
     $htmlHelper->stageRowData($arr);
 
 //$tsd=$htmlHelper->createCell('task_start_datetime', $arr['task_start_date'])
-echo "    <tr id='$tid'   class=".'"'.$class.'"'."><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td >$tsTZ</td><td   >$te</td></tr> ";
+echo "    <tr id='$tid'   class=".'"'.$class.'"'."><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td >$td</td><td >$tsTZ</td><td   >$te</td></tr> ";
 
 //echo "    <tr style='text-align:left'><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td>".$tsd."</td><td   >$te</td></tr> ";
 }
@@ -647,7 +649,7 @@ $open_link=true;
 
 
 ?>
-<link rel="stylesheet" type="text/css" href="http://localhost/w2pm/modules/css/jquery.datatables.css" media="all" charset="utf-8"/>
+<link rel="stylesheet" type="text/css" href="./modules/css/jquery.datatables.css" media="all" charset="utf-8"/>
 <script language='javascript' type='text/javascript'>
 function require(script) {
     $.ajax({
@@ -663,14 +665,14 @@ function require(script) {
         }
     });
 }          
-require("http://localhost/w2pm/modules/planner/js2/jquery.js");    
-require("http://localhost/w2pm/modules/planner/js2/jquery.datatables.js");    
-require("http://localhost/w2pm/modules/planner/js2/jquery.jeditable.js");    
-require("http://localhost/w2pm/modules/planner/js2/jquery.datatables.editable.js");    
-require("http://localhost/w2pm/modules/planner/js2/jquery.blockui.js");    
-require("http://localhost/w2pm/modules/planner/js2/jquery.validate.js");    
-require("http://localhost/w2pm/modules/planner/js2/additional-methods.js");    
-require("http://localhost/w2pm/modules/planner/js2/jquery-ui.js");    
+require("./modules/planner/js2/jquery.js");    
+require("./modules/planner/js2/jquery.datatables.js");    
+require("./modules/planner/js2/jquery.jeditable.js");    
+require("./modules/planner/js2/jquery.datatables.editable.js");    
+require("./modules/planner/js2/jquery.blockui.js");    
+require("./modules/planner/js2/jquery.validate.js");    
+require("./modules/planner/js2/additional-methods.js");    
+require("./modules/planner/js2/jquery-ui.js");    
 
 
 //require("http://localhost/w2pm/modules/planner/js/jquery.datatables.css");    
@@ -684,36 +686,136 @@ $(document).ready(function(){
 "aoColumns":  [
     { sName:"task_percent_complete"} ,
     { sName:"task_name"} ,
+    { sName:"task_description"} ,
     { sName:"task_start_date"} ,
     { sName:"task_end_date"} 
 ]  ,
 bSort:false,
-"aaSorting":[ ]
+"aaSorting":[ ],
+        "oLanguage": {
+            "sSearch": "Search all:"
+        }
+
   }
     ).makeEditable({
-   sUpdateURL: "http://localhost/w2pm/index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true"
+   sUpdateURL: "./index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true",
+   "aoColumns":  [
+    { tooltip: 'Click to edit task % complete' } ,
+    { tooltip: 'Click to edit task name' } ,
+    { type:"textarea", submit: "Save changes",indicator: 'Saving task description...',
+                                tooltip: 'Click to edit task description',
+} ,
+    { tooltip: 'Click to edit task start date' } ,
+    { tooltip: 'Click to edit task end date' } 
+]
   
     });
+ var oTable = $('#tblTask').dataTable();    
+var asInitVals = new Array();
+ 
+ 
+ 
+ 
+ 
+     $("tfoot input").keyup( function () {
+        /* Filter on the column (the index) of this element */
+        oTable.fnFilter( this.value, $("tfoot input").index(this) );
+    } );
+     
+
+    /*
+     * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+     * the footer
+     */
+    $("tfoot input").each( function (i) {
+        asInitVals[i] = this.value;
+    } );
+   $("tfoot input").focus( function () {
+        if ( this.className == "search_init" )
+        {
+            this.className = "";
+            this.value = "";
+        }
+    } );
+
+    $("tfoot input").blur( function (i) {
+        if ( this.value == "" )
+        {
+            this.className = "search_init";
+            this.value = asInitVals[$("tfoot input").index(this)];
+        }
+    } ); 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ oTable.fnSetColumnVis( 2,  true  );	
+ 
+ function fnShowHide( iCol )
+{
+    /* Get the DataTables object again - this is not a recreation, just a get of the object */
+    var oTable = $('#tblTask').dataTable();
+     
+    var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+    oTable.fnSetColumnVis( iCol, bVis ? false : true );
+	oTable.makeEditable({
+   sUpdateURL: "./index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true"
+  
+    });
+}
+
+
+
+
+    $('#TaskDescDispl').click(function(){
+       fnShowHide( 2 );
+    });
+
+	
 });
-                  
+
+
+
+              
   //class="tbl list"    
 </script>
 <style type="text/css">
-@import "http://localhost/w2pm/modules/planner/css/jquery.datatables.css";
+@import "./modules/planner/css/jquery.datatables.css";
 </style>
 
+
+<input type="button" value="Toggle Display of Task Description" id="TaskDescDispl" >
+<div style="text-align:right;">Look for column search fields in table footer </div>
+
+
 <form name="frm_tasks" accept-charset="utf-8"">
-<div id=top1>  </div>  <div id=top2 style="align:right">  </div>
+<div id=top1> </div>  <div id=top2 style="align:right">
+  </div>
+
 
 <table id="tblTask"  class="display tbl list"  >
 
-    <thead>    
+    <thead>
+	
+	
+	
+	    
 <?php
 $WorkTitle=$AppUI->_('Work');
 $NameTitle=$AppUI->_('Task  Name');
 $StartTitle=$AppUI->_('Start');
+$DescTitle=$AppUI->_('Description');
 $EndTitle=$AppUI->_('Finish');
-echo "    <th nowrap='nowrap'>$WorkTitle </th><th>$NameTitle</th><th>$StartTitle</th><th>$EndTitle</th> ";
+echo "    <th nowrap='nowrap'>$WorkTitle </th><th>$NameTitle </th><th>$DescTitle</th><th>$StartTitle</th><th>$EndTitle</th> ";
             ?>
   
 <?php
@@ -722,6 +824,33 @@ echo "    <th nowrap='nowrap'>$WorkTitle </th><th>$NameTitle</th><th>$StartTitle
  <tr><td>aaa</td><td>bbb</td><td>aaa</td><td>bbb</td></tr>
  */            ?>
      </thead>
+	 
+	  <tfoot>
+
+    <tr>
+        <th rowspan="1" colspan="1">
+            <input class="search_init" type="text" value="Search Work %" name="search_work"></input>
+        </th>
+        <th rowspan="1" colspan="1">
+            <input class="search_init" type="text" value="Search Task Name" name="search_task_name"></input>
+        </th>
+        <th rowspan="1" colspan="1">
+            <input class="search_init" type="text" value="Search Task Description" name="search_task_description"></input>
+        </th>
+        <th rowspan="1" colspan="1">
+            <input class="search_init" type="text" value="Search Task Start" name="search_task_description"></input>
+        </th>
+        <th rowspan="1" colspan="1">
+            <input class="search_init" type="text" value="Search Task End" name="search_task_description"></input>
+        </th>
+    </tr>
+
+</tfoot>	 
+
+	 
+	 
+	 
+	 
     <tbody>
 <?php
 reset($projects);

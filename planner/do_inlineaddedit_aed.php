@@ -13,17 +13,19 @@ if (!canEdit('tasks')) {
 
 
 
-  $id =(int) $_REQUEST['id'] ;
-  $value = $_REQUEST['value'] ;
+  $id =(int)w2pGetParam( $_REQUEST,'id',0) ;
+  $value = w2pGetParam($_REQUEST,'value') ;
   $column = $_REQUEST['columnName'] ;
-  $columnPosition = $_REQUEST['columnPosition'] ;
-  $columnId = $_REQUEST['columnId'] ;
-  $rowId = $_REQUEST['rowId'] ;
+  $columnPosition = (int)$_REQUEST['columnPosition'] ;
+  $columnId = (int) $_REQUEST['columnId'] ;
+  $rowId = (int)$_REQUEST['rowId'] ;
   
   $task_obj= new CTask();
   $task_obj->load($id);
   if ($column=="task_name") $task_obj->task_name=$value;
   
+  if ($column=="task_description") $task_obj->task_description=$value;
+
   if ($column=="task_percent_complete") $task_obj->task_percent_complete=(int)$value;
   if ($column=="task_start_date") {
   	$userTZ = $AppUI->getPref('TIMEZONE');
@@ -55,6 +57,6 @@ if (!canEdit('tasks')) {
      set */ 
 	 
 
-  if ($task_obj->store()) echo $value; else echo "cannot store/edit task name";
+  if ( ($id>0)&&($task_obj->store())) echo $value; else echo "cannot store/edit task name";
 
 ?>
