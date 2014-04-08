@@ -17,7 +17,7 @@ if (!defined('W2P_BASE_DIR')){
 
 $config = array();
 $config['mod_name']        = 'Planner';			    // name the module
-$config['mod_version']     = '1.0.6';			      	// add a version number
+$config['mod_version']     = '1.0.7';			      	// add a version number
 $config['mod_directory']   = 'planner';             // tell web2project where to find this module
 $config['mod_setup_class'] = 'CSetupPlanner';		// the name of the PHP setup class (used below)
 $config['mod_type']        = 'user';				      // 'core' for modules distributed with w2p by standard, 'user' for additional modules
@@ -99,7 +99,8 @@ class CSetupPlanner
             case '1.0.3':
             case '1.0.4':
             case '1.0.5':
-            case '1.0.6':                //replace old Date_calc by Date_Calc
+            case '1.0.6':
+            case '1.0.7':                //replace old Date_calc by Date_Calc
             default:
 				//do nothing
 		}

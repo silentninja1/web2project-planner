@@ -768,7 +768,17 @@ var asInitVals = new Array();
     var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
     oTable.fnSetColumnVis( iCol, bVis ? false : true );
 	oTable.makeEditable({
-   sUpdateURL: "./index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true"
+   sUpdateURL: "./index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true",
+   "aoColumns":  [
+    { tooltip: 'Click to edit task % complete' } ,
+    { tooltip: 'Click to edit task name' } ,
+    { type:"textarea", submit: "Save changes",indicator: 'Saving task description...',
+                                tooltip: 'Click to edit task description',
+} ,
+    { tooltip: 'Click to edit task start date' } ,
+    { tooltip: 'Click to edit task end date' } 
+]
+  
   
     });
 }
