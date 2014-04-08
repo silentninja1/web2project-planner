@@ -23,6 +23,7 @@ if (!canEdit('tasks')) {
   $task_obj= new CTask();
   $task_obj->load($id);
   if ($column=="task_name") $task_obj->task_name=$value;
+  if ($column=="task_priority") $task_obj->task_priority=$value;
   
   if ($column=="task_description") $task_obj->task_description=$value;
 

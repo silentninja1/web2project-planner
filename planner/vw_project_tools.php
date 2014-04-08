@@ -43,7 +43,7 @@ global $history_active;
 function showtask_pd_ed1(&$arr, $level = 0, $today_view = false) {
 	global $AppUI, $w2Pconfig, $done, $userAlloc, $showEditCheckbox;
 	global $task_access, $PROJDESIGN_CONFIG, $m, $expanded;
-  $class = 'late';//w2pFindTaskComplete($arr['task_start_date'], $arr['task_end_date'], $arr['task_percent_complete']);
+  $class = '';//w2pFindTaskComplete($arr['task_start_date'], $arr['task_end_date'], $arr['task_percent_complete']);
 /*
                $myDate = intval($value) ? new w2p_Utilities_Date($value) : null;
                 $cell = $myDate ? $myDate->format($this->df) : '-';
@@ -56,7 +56,7 @@ $df=  ' ' . $AppUI->getPref('SHDATEFORMAT');
 $tp=(string)$arr['task_percent_complete'];
 $tn=(string)$arr['task_name'];
 $td=(string)  ($arr['task_description']);
-
+$tpr=(string)$arr['task_priority'];
 $te=(string)$AppUI->formatTZAwareTime($arr['task_end_date'], '%Y-%m-%d %T');;
  $ts=(string)$arr['task_start_date'];
 //	$start_date_userTZ = $start_date = new w2p_Utilities_Date($ts,$userTZ);
@@ -74,7 +74,7 @@ $pad="$padlpx";//$level*50;
     $htmlHelper->stageRowData($arr);
 
 //$tsd=$htmlHelper->createCell('task_start_datetime', $arr['task_start_date'])
-echo "    <tr id='$tid'   class=".'"'.$class.'"'."><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td >$td</td><td >$tsTZ</td><td   >$te</td></tr> ";
+echo "    <tr id='$tid' ><td >$tp </td><td >$tpr </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td >$td</td><td >$tsTZ</td><td   >$te</td></tr> ";
 
 //echo "    <tr style='text-align:left'><td nowrap='nowrap'>$tp </td><td style='padding-left:$padl"."px; text-align:left'>$tn</td><td>".$tsd."</td><td   >$te</td></tr> ";
 }
@@ -683,12 +683,14 @@ $(document).ready(function(){
 "bStateSave":true,
 "sDom": '<top1 f><top2 l>rt<"bottom"ip><"clear">'   ,
 "aLengthMenu": [[25, 50, 100,-1], [25, 50,100, "All"]],
+"bAutoWidth": true,
 "aoColumns":  [
-    { sName:"task_percent_complete"} ,
-    { sName:"task_name"} ,
-    { sName:"task_description"} ,
-    { sName:"task_start_date"} ,
-    { sName:"task_end_date"} 
+    { "sWidth": "10%",sName:"task_percent_complete"} ,
+    { "sWidth": "10%",sName:"task_priority"} ,
+    { "sWidth": "10%",sName:"task_name"} ,
+    { "sWidth": "10%",sName:"task_description"} ,
+    { "sWidth": "10%",sName:"task_start_date"} ,
+    { "sWidth": "10%",sName:"task_end_date"} 
 ]  ,
 bSort:false,
 "aaSorting":[ ],
@@ -700,13 +702,14 @@ bSort:false,
     ).makeEditable({
    sUpdateURL: "./index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true",
    "aoColumns":  [
-    { tooltip: 'Click to edit task % complete' } ,
-    { tooltip: 'Click to edit task name' } ,
+    { tooltip: 'Click to edit task % complete',indicator: 'Saving task percent...' } ,
+    { tooltip: 'Click to edit task priority',indicator: 'Saving task priority...' } ,
+    { tooltip: 'Click to edit task name',indicator: 'Saving task name...' } ,
     { type:"textarea", submit: "Save changes",indicator: 'Saving task description...',
                                 tooltip: 'Click to edit task description',
 } ,
-    { tooltip: 'Click to edit task start date' } ,
-    { tooltip: 'Click to edit task end date' } 
+    { tooltip: 'Click to edit task start date',indicator: 'Saving task date...' } ,
+    { tooltip: 'Click to edit task end date',indicator: 'Saving task date...' } 
 ]
   
     });
@@ -825,7 +828,8 @@ $NameTitle=$AppUI->_('Task  Name');
 $StartTitle=$AppUI->_('Start');
 $DescTitle=$AppUI->_('Description');
 $EndTitle=$AppUI->_('Finish');
-echo "    <th nowrap='nowrap'>$WorkTitle </th><th>$NameTitle </th><th>$DescTitle</th><th>$StartTitle</th><th>$EndTitle</th> ";
+$PrioTitle=$AppUI->_('Priority');
+echo "    <th >$WorkTitle </th><th >$PrioTitle </th><th>$NameTitle </th><th>$DescTitle</th><th>$StartTitle</th><th>$EndTitle</th> ";
             ?>
   
 <?php
