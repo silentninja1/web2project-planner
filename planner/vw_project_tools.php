@@ -683,7 +683,7 @@ $(document).ready(function(){
 "bStateSave":true,
 "sDom": '<top1 f><top2 l>rt<"bottom"ip><"clear">'   ,
 "aLengthMenu": [[25, 50, 100,-1], [25, 50,100, "All"]],
-"bAutoWidth": true,
+"bAutoWidth": false,
 "aoColumns":  [
     { "sWidth": "10%",sName:"task_percent_complete"} ,
     { "sWidth": "10%",sName:"task_priority"} ,
@@ -761,7 +761,7 @@ var asInitVals = new Array();
  
  
  
- oTable.fnSetColumnVis( 2,  true  );	
+ oTable.fnSetColumnVis( 3,  true  );	
  
  function fnShowHide( iCol )
 {
@@ -773,15 +773,15 @@ var asInitVals = new Array();
 	oTable.makeEditable({
    sUpdateURL: "./index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true",
    "aoColumns":  [
-    { tooltip: 'Click to edit task % complete' } ,
-    { tooltip: 'Click to edit task name' } ,
+    { tooltip: 'Click to edit task % complete',indicator: 'Saving task percent...' } ,
+    { tooltip: 'Click to edit task priority',indicator: 'Saving task priority...' } ,
+    { tooltip: 'Click to edit task name',indicator: 'Saving task name...' } ,
     { type:"textarea", submit: "Save changes",indicator: 'Saving task description...',
                                 tooltip: 'Click to edit task description',
 } ,
-    { tooltip: 'Click to edit task start date' } ,
-    { tooltip: 'Click to edit task end date' } 
+    { tooltip: 'Click to edit task start date',indicator: 'Saving task date...' } ,
+    { tooltip: 'Click to edit task end date',indicator: 'Saving task date...' } 
 ]
-  
   
     });
 }
@@ -790,7 +790,7 @@ var asInitVals = new Array();
 
 
     $('#TaskDescDispl').click(function(){
-       fnShowHide( 2 );
+       fnShowHide( 3 );
     });
 
 	
@@ -844,6 +844,9 @@ echo "    <th >$WorkTitle </th><th >$PrioTitle </th><th>$NameTitle </th><th>$Des
     <tr>
         <th rowspan="1" colspan="1">
             <input class="search_init" type="text" value="Search Work %" name="search_work"></input>
+        </th>
+        <th rowspan="1" colspan="1">
+            <input class="search_init" type="text" value="Search Priority %" name="search_priority"></input>
         </th>
         <th rowspan="1" colspan="1">
             <input class="search_init" type="text" value="Search Task Name" name="search_task_name"></input>
