@@ -703,7 +703,14 @@ bSort:false,
    sUpdateURL: "./index.php?m=planner&a=do_inlineaddedit_aed&suppressHeaders=true",
    "aoColumns":  [
     { tooltip: 'Click to edit task % complete',indicator: 'Saving task percent...' } ,
-    { tooltip: 'Click to edit task priority',indicator: 'Saving task priority...' } ,
+    { tooltip: 'Click to edit task priority',indicator: 'Saving task priority...',
+	   type: 'select',
+
+                          submit: 'Ok',
+                                onblur: 'cancel',
+                                data: "{'':'Please select...', '-1':'-1','0':'0','1':'1'}",
+                                event: 'mouseover'
+ } ,
     { tooltip: 'Click to edit task name',indicator: 'Saving task name...' } ,
     { type:"textarea", submit: "Save changes",indicator: 'Saving task description...',
                                 tooltip: 'Click to edit task description',
@@ -815,7 +822,7 @@ var asInitVals = new Array();
   </div>
 
 
-<table id="tblTask"  class="display tbl list"  >
+<table id="tblTask"  class=" tbl list"  >
 
     <thead>
 	
