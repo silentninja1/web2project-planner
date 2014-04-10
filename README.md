@@ -2,6 +2,7 @@ web2project-planner
 ===================
 
 *drag/drop/resize for events, tasks and day/week/month planning
+
 *drag tasks into calendar to convert into events for daily/weekly/monthly time planning
 
 *intable editing without opening the addedit webpage
