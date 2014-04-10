@@ -641,14 +641,44 @@ $open_link=true;
  <table id="tblTasksarrow" class="tbl list">
     <tr>
         <td colspan="16" align='left'>
-            <?php echo $open_link; ?>
+            <?php echo $open_link; 
         </td>
     </tr> </table>
 
 */
 
+	$obj = new CProject();
+	// Now check if the project is editable/viewable.
+	$denied = $obj->getDeniedRecords($AppUI->user_id);
+	if (in_array($project_id, $denied)) {
+		$AppUI->redirect(ACCESS_DENIED);
+	}
 
+	$canDeleteProject = $obj->canDelete($msg, $project_id);
+
+	// load the record data
+	$obj->loadFull(null, $project_id);
+
+	if (!$obj) {
+		$AppUI->setMsg('Project');
+		$AppUI->setMsg('invalidID', UI_MSG_ERROR, true);
+		$AppUI->redirect();
+	}
 ?>
+
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std view">
+<tr>
+	<td style="border: outset #d1d1cd 1px; background-color:#<?php echo $obj->project_color_identifier; ?>" colspan="2" class="data _identifier">
+            <div class="left" style="color: <?php echo bestColor($obj->project_color_identifier); ?>; font-weight: bold; padding-top: 2px;"><?php echo $AppUI->_('Project') . ': ' . $obj->project_name; ?></div>
+
+	</td>
+</tr>
+
+</table>
+
+
+
+
 <link rel="stylesheet" type="text/css" href="./modules/css/jquery.datatables.css" media="all" charset="utf-8"/>
 <script language='javascript' type='text/javascript'>
 function require(script) {
@@ -682,7 +712,7 @@ $(document).ready(function(){
   {
 "bStateSave":true,
 "sDom": '<top1 f><top2 l>rt<"bottom"ip><"clear">'   ,
-"aLengthMenu": [[25, 50, 100,-1], [25, 50,100, "All"]],
+"aLengthMenu": [[50,  100,-1], [50,100, "All"]],
 "bAutoWidth": false,
 "aoColumns":  [
     { "sWidth": "10%",sName:"task_percent_complete"} ,
@@ -692,6 +722,7 @@ $(document).ready(function(){
     { "sWidth": "10%",sName:"task_start_date"} ,
     { "sWidth": "10%",sName:"task_end_date"} 
 ]  ,
+"iDisplayLength": 50,
 bSort:false,
 "aaSorting":[ ],
         "oLanguage": {
@@ -707,12 +738,12 @@ bSort:false,
 	   type: 'select',
 
                           submit: 'Ok',
-                                onblur: 'cancel',
+ //                               onblur: 'cancel',
                                 data: "{'':'Please select...', '-1':'-1','0':'0','1':'1'}",
-                                event: 'mouseover'
+                                event: 'click'
  } ,
     { tooltip: 'Click to edit task name',indicator: 'Saving task name...' } ,
-    { type:"textarea", submit: "Save changes",indicator: 'Saving task description...',
+    { type:"textarea", submit: "Save",indicator: 'Saving task description...',
                                 tooltip: 'Click to edit task description',
 } ,
     { tooltip: 'Click to edit task start date',indicator: 'Saving task date...' } ,
@@ -813,7 +844,7 @@ var asInitVals = new Array();
 </style>
 
 
-<input type="button" value="Toggle Display of Task Description" id="TaskDescDispl" >
+<input type="button" value="Hide/show Task Description" id="TaskDescDispl" >
 <div style="text-align:right;">Look for column search fields in table footer </div>
 
 
@@ -919,6 +950,7 @@ echo "    <tr><td nowrap='nowrap'>$tp </td><td>$tn</td><td>$ts</td><td>$te</td><
 
 
 </form>
+<!---
 <table>
 <tr>
         <td><?php echo $AppUI->_('Key'); ?>:</td>
@@ -951,7 +983,11 @@ echo "    <tr><td nowrap='nowrap'>$tp </td><td>$tn</td><td>$ts</td><td>$te</td><
         <td class="done">&nbsp; &nbsp;</td>
         <td>=<?php echo $AppUI->_('Done'); ?></td>
 </tr>
-</table><?php
+</table>
+
+
+-->
+<?php
 
 
 }
