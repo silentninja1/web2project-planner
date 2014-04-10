@@ -1,11 +1,15 @@
 web2project-planner
 ===================
 
-drag/drop/resize for events, tasks and day/week/month planning
+*drag/drop/resize for events, tasks and day/week/month planning
+*drag tasks into calendar to convert into events for daily/weekly/monthly time planning
 
-intable editing without opening the addedit webpage
-filter/search on whole table, or on individual columns, 
+*intable editing without opening the addedit webpage
+*filter/search on whole table, or on individual columns, 
     including AND search over several columns
+
+
+
 
 
 I have updated the planner module for w2p 3.1.
