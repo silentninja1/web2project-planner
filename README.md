@@ -6,6 +6,7 @@ web2project-planner
 *drag tasks into calendar to convert into events for daily/weekly/monthly time planning
 
 *intable editing without opening the addedit webpage
+
 *filter/search on whole table, or on individual columns, 
     including AND search over several columns
 
