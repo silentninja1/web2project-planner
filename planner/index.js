@@ -35,7 +35,7 @@
  *
  * Use fullcalendar.css for basic styling.
  * For event drag & drop, requires jQuery UI draggable.
- * For event resizing, requires jQuery UI resizable.
+ * For event resizing, requires j UI resizable.
  *
  * Copyright (c) 2011 Adam Shaw
  * Dual licensed under the MIT and GPL licenses, located in

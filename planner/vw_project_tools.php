@@ -679,7 +679,7 @@ $open_link=true;
 
 
 
-<link rel="stylesheet" type="text/css" href="./modules/css/jquery.datatables.css" media="all" charset="utf-8"/>
+<link rel="stylesheet" type="text/css" href="./modules/css/jquery.dataTables.css" media="all" charset="utf-8"/>
 <script language='javascript' type='text/javascript'>
 function require(script) {
     $.ajax({
@@ -696,9 +696,9 @@ function require(script) {
     });
 }          
 require("./modules/planner/js2/jquery.js");    
-require("./modules/planner/js2/jquery.datatables.js");    
+require("./modules/planner/js2/jquery.dataTables.js");    
 require("./modules/planner/js2/jquery.jeditable.js");    
-require("./modules/planner/js2/jquery.datatables.editable.js");    
+require("./modules/planner/js2/jquery.dataTables.editable.js");    
 require("./modules/planner/js2/jquery.blockui.js");    
 require("./modules/planner/js2/jquery.validate.js");    
 require("./modules/planner/js2/additional-methods.js");    
